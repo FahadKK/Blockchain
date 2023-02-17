@@ -544,10 +544,10 @@ func createContractSimple() {
 }
 
 func updateContract() {
-	fmt.Println("Updating a contract from scratch involes alot of vairables.")
+	fmt.Println("Updating a contract from scratch involves many variables.")
 	fmt.Println("This is why I need you to go to the file Main/contract.json. ")
 	fmt.Println("In that file you will find a valid contract. Please change whatever value you desire.")
-	fmt.Print("Don't forget to change cotnract ID.")
+	fmt.Print("Don't forget to change contract ID.")
 	fmt.Println("Kindly don't mess with the structure of the contract.")
 	fmt.Println("After changing the values of the contract save the json file and press ENTER.")
 
@@ -575,7 +575,7 @@ func updateContract() {
 
 func createContract() {
 
-	fmt.Println("Creating a contract from scratch involes alot of vairables.")
+	fmt.Println("Creating a contract from scratch involves many variables.")
 	fmt.Println("This is why I need you to go to the file Main/contract.json. ")
 	fmt.Println("In that file you will find a valid contract. Please change whatever value you desire.")
 	fmt.Println("Kindly don't mess with the structure of the contract.")
