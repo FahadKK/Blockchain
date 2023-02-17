@@ -103,9 +103,6 @@ func (s *SmartContract) ReadContract(ctx contractapi.TransactionContextInterface
 * This method will not change old disputes, responses, and status.
 * @param jsonString represents The new contract.
  */
-// TODO: What will happen if the jsonString is missing useless info such as responses ?
-// TODO: Ask the doctor should UpdateContract change status to pending ? Since the conditions has changed.
-// TODO: Recommendation! Removing updateContract. Updating contract is so useless. It will complicate things to an extreme.
 func (s *SmartContract) UpdateContract(ctx contractapi.TransactionContextInterface, jsonString string) (bool, error) {
 	// TODO: Test the code.
 
