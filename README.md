@@ -6,8 +6,8 @@ ww.google.com
 
 ## Prerequisites 
 --------------
-This program has been tested mainly on the Linux operating system.
- So, I recommend using ubuntu to try this application
+This program has been tested mainly on the Linux operating system. <br>
+ So, I recommend using ubuntu to try this application <br>
 - Golang
 - curl
 - Docker
@@ -16,7 +16,8 @@ This program has been tested mainly on the Linux operating system.
 
 ## Installation
 ---------------
-This installation guide will assume that you have installed Fablo globally. 
+This installation guide will assume that you have installed Fablo globally.
+
 
 Inside BlockChain folder run this command :
 ```
@@ -34,7 +35,7 @@ Now interact with the system as much as you want.
 
 ## Fablo Installation | Setting Up The Environment
 -----
-If you need help setting up Fablo, this guide will help you.
+If you need help setting up Fablo, this guide will help you. <br>
 Do note that we will assume that this is a fresh installation of Ubuntu OS. 
 ```
 sudo apt-get update
