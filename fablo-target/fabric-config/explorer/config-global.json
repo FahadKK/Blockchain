@@ -1,0 +1,13 @@
+{
+  "network-configs": {
+    "network-countrya": {
+      "name": "Network of CountryA",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-countrya.json"
+    },
+    "network-countryb": {
+      "name": "Network of CountryB",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-countryb.json"
+    }
+  },
+  "license": "Apache-2.0"
+}
