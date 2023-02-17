@@ -1,0 +1,37 @@
+name: fablo-test-network-countrya
+description: Connection profile for CountryA in Fablo network
+version: 1.0.0
+client:
+  organization: CountryA
+organizations:
+  CountryA:
+    mspid: CountryAMSP
+    peers:
+      - peer0.countrya.example.com
+      - peer0.countryb.example.com
+    certificateAuthorities:
+      - ca.countrya.example.com
+peers:
+  peer0.countrya.example.com:
+    url: grpcs://localhost:7041
+    tlsCACerts:
+      path: >-
+        /home/fkk/Desktop/Blockchain/fablo-target/fabric-config/crypto-config/peerOrganizations/countrya.example.com/peers/peer0.countrya.example.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: peer0.countrya.example.com
+  peer0.countryb.example.com:
+    url: grpcs://localhost:7061
+    tlsCACerts:
+      path: >-
+        /home/fkk/Desktop/Blockchain/fablo-target/fabric-config/crypto-config/peerOrganizations/countryb.example.com/peers/peer0.countryb.example.com/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: peer0.countryb.example.com
+certificateAuthorities:
+  ca.countrya.example.com:
+    url: http://localhost:7040
+    caName: ca.countrya.example.com
+    tlsCACerts:
+      path: >-
+        /home/fkk/Desktop/Blockchain/fablo-target/fabric-config/crypto-config/peerOrganizations/countrya.example.com/ca/ca.countrya.example.com-cert.pem
+    httpOptions:
+      verify: false

@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "network-countrya": {
+      "name": "Network of CountryA",
+      "profile": "/opt/explorer/app/platform/fabric/connection-profile/connection-profile-countrya.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

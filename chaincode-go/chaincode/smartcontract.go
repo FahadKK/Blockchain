@@ -104,13 +104,13 @@ func (s *SmartContract) ReadContract(ctx contractapi.TransactionContextInterface
 * @param jsonString represents The new contract.
  */
 func (s *SmartContract) UpdateContract(ctx contractapi.TransactionContextInterface, jsonString string) (bool, error) {
-	// TODO: Test the code.
 
-	// Trying to parse the jsonString.
+	//Parsing jsonString
+	jsonString = strings.ReplaceAll(jsonString, "'", "\"")
 	var contract Contract
 	err := json.Unmarshal([]byte(jsonString), &contract)
 	if err != nil {
-		return false, fmt.Errorf("Error Unmarshaling JSON: %s", err)
+		return false, fmt.Errorf("Error Unmarshaling JSON: %s, \n %s", err, jsonString)
 	}
 
 	// If we don't find the contract in the blockchain we stop.
@@ -253,8 +253,9 @@ func (s *SmartContract) UpdateDispute(ctx contractapi.TransactionContextInterfac
 				return false, fmt.Errorf("You can't update a closed dispute.")
 			}
 			flag = true
-			oldContract.Disputes[i].Responses = dispute.Responses
+			oldResponse := oldContract.Disputes[i].Responses // because ldContract.Disputes[i] = dispute will override responses.
 			oldContract.Disputes[i] = dispute
+			oldContract.Disputes[i].Responses = oldResponse
 			break
 		}
 	}
