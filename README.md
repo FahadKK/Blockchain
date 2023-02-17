@@ -1,6 +1,6 @@
 #  Managing Overseas Employment Contracts with Blockchain 
-Using Blockchain to Manage Overseas Employment Contracts **Enter**
-(Insert Name) is a proof of concept program that will demonstrate the solution provided in the following paper: **Enter**
+Using Blockchain to Manage Overseas Employment Contracts <br>
+(Insert Name) is a proof of concept program that will demonstrate the solution provided in the following paper: <br>
 ww.google.com
 
 
