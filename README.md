@@ -51,7 +51,7 @@ Now interact with the system as much as you want.
 <br>
 
 If you need help setting up Fablo, this guide will help you. <br>
-Be aware that we will assume that this is a fresh installation of Ubuntu OS. 
+Be aware that we will assume this is a fresh installation of Ubuntu OS.
 ```
 sudo apt-get update
 sudo apt --yes install software-properties-common
@@ -195,7 +195,7 @@ Enter your choice: 2
 Enter Contract ID: C-1234
 ```
 **Output** <br>
-<font size = "2" > We will read the contract to see changes </font>
+<font size = "2" > We will read the contract to see changes. The contract status will become Active.  </font>
 
 ```
 +------------------------------+--------------------------------+
@@ -252,7 +252,7 @@ Enter the content of your dispute: Never Received the promised schooling for chi
 
 **Output** <br>
 
-<font size = "2" > We will read the contract to see changes </font>
+<font size = "2" > We will read the contract to see changes. </font>
 ```
 +------------------------------+--------------------------------+
 | FIELD                        | VALUE                          |
