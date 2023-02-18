@@ -621,7 +621,7 @@ func createBenefits(ctx contractapi.TransactionContextInterface, Currency string
 		Currency:       Currency,
 		Salary:         Salary,
 		AnnualIncrease: AnnualIncrease,
-		AnnualLeave:    AnnualIncrease,
+		AnnualLeave:    AnnualLeave,
 		OtherBenefits:  OtherBenefits,
 	}
 	return benefits, true
