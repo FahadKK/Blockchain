@@ -28,7 +28,6 @@ In addition, To Ubuntu, you will need to install the following:
 ---------------
 <br>
 
-This installation guide will assume that you have installed Fablo globally. <br>
 
 
 Inside BlockChain folder run this command :
@@ -44,6 +43,8 @@ When the network finishes setting up run this command:
 Now interact with the system as much as you want.
 * sudo Fablo prune will shut done the network, including all stored information.
 * sudo Fablo recreate will reset the network.
+
+<br>
 
 ## Fablo Installation | Setting Up The Environment
 -----
@@ -97,6 +98,7 @@ Enter your choice:
 
 
 ### **Example 2 - Create Contract (Simple)**
+
 
 Creating a contract involves many variables, so I made a method that will streamline the process. <br>
 This method will only require a contract id to run. The rest of the variables will be filled by the system. <br>
