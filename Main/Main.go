@@ -82,22 +82,55 @@ type Response struct {
 }
 
 func printScreen() {
-	fmt.Println("Please choose one of the following methods by entering its number:")
-	fmt.Println(" 1. Create Contract (Simple)")
-	fmt.Println(" 2. Approve Contract")
-	fmt.Println(" 3. Update Contract ")
-	fmt.Println(" 4. Extend Contract")
-	fmt.Println(" 5. Terminate Contract")
-	fmt.Println(" 6. Issue Dispute")
-	fmt.Println(" 7. Update Dispute")
-	fmt.Println(" 8. Close Dispute")
-	fmt.Println(" 9. Respond to Dispute")
-	fmt.Println("10. Create Contract")
-	fmt.Println("11. Read Contract")
-	fmt.Println("12. View Employee History")
-	fmt.Println("13. View Employer History")
-	fmt.Println("14. Get All Contracts")
+	options := []string{
+		"1. Create Contract (Simple)",
+		"2. Approve Contract",
+		"3. Update Contract",
+		"4. Extend Contract",
+		"5. Terminate Contract",
+		"6. Issue Dispute",
+		"7. Update Dispute",
+		"8. Close Dispute",
+		"9. Respond to Dispute",
+		"10. Create Contract",
+		"11. Read Contract",
+		"12. View Employee History",
+		"13. View Employer History",
+		"14. Get All Contracts",
+	}
 
+	numCols := 3
+	numRows := 5
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetBorder(true)
+	table.SetColumnSeparator("  ")
+	table.SetHeaderAlignment(tablewriter.ALIGN_CENTER)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+	table.SetAutoFormatHeaders(false)
+	table.SetHeaderLine(false)
+	table.SetRowLine(false)
+	table.SetTablePadding("\t")
+	table.SetHeader([]string{"Options", "", "Options", "", "Options"})
+	table.SetRowSeparator("-")
+	table.SetCenterSeparator("|")
+	table.SetColumnSeparator("|")
+
+	for i := 0; i < numRows; i++ {
+		row := []string{}
+		for j := 0; j < numCols; j++ {
+			idx := i + j*numRows
+			if idx >= len(options) {
+				row = append(row, "", "")
+			} else {
+				row = append(row, options[idx], "")
+			}
+		}
+		table.Append(row)
+	}
+
+	table.Render()
+	fmt.Println("Please choose one of the above options by entering its number:")
 }
 
 func choice() int {
