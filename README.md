@@ -277,7 +277,7 @@ Enter the content of your dispute: Never Received the promised schooling for chi
 |                              | developers                     |
 | Currency                     | SAR                            |
 | Salary                       | 10000                          |
-| Annual Increase              | 3-7                            |
+| Annual Increase              | 3-7%                           |
 | Annual Leave                 | 30 days                        |
 | Housing                      | 0                              |
 | Allowances                   | 0                              |
@@ -340,7 +340,7 @@ Enter the content of your response: Compensation for tuition will be paid immedi
 |                              | developers                     |
 | Currency                     | SAR                            |
 | Salary                       | 10000                          |
-| Annual Increase              | 3-7                            |
+| Annual Increase              | 3-7%                           |
 | Annual Leave                 | 30 days                        |
 | Housing                      | 0                              |
 | Allowances                   | 0                              |
