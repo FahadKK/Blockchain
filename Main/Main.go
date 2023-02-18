@@ -130,7 +130,7 @@ func printScreen() {
 	}
 
 	table.Render()
-	fmt.Println("Please choose one of the above options by entering its number:")
+	fmt.Println("Please choose one of the above options by entering its number")
 }
 
 func choice() int {
@@ -554,7 +554,7 @@ func createContractSimple() {
 	// We don't use the post method because here we are sending json string.
 	// TODO: Create a method to easily embede inputs here.
 	var data = strings.NewReader(`{"method": "HandleAddContract",
-"args": ["{'ID': '` + input + `','Status': 'Active','Notes': 'N/A','Start date': '01/01/2022','End date': '08/08/2023','Extension details': 'N/A','Employer': {        'ID': 'Comp-1',        'Name': 'CompanyA',       'Employer address and contact details': 'First st,Riyadh1234','Country': 'Saudi Arabia'      },'Employee': {        'ID': '441101772',        'Name': 'JohnDoe',        'Employee address and contact details': 'Second st,New Delhi 3342',        'Country': 'India'      },'Job': {        'Position': 'Developer',        'Level': 'Senior',        'Description': 'Manage teams of junior developers'      },'Benefits': {        'Currency': 'SAR',        'Salary': 10000,        'Annual increase': '3-7',        'Annual leave': '30 days','Housing': 2000,        'Allowances': 1500,'Other benefits': 'Schooling for children and yearly tickets'      }, 'Disputes': [        {          'ID': 'D123',          'Status': 'Closed',          'Last updated date': '01/10/2023',          'Content': 'Employer did not provide the travel tickets for my annual leave in 2022','Response': [            {              'ID': 'Res123',              'Last updated date': '01/12/2023',              'Content': 'The employee was compensated'            }          ]}      ]    }"  ]}`) //
+"args": ["{'ID': '` + input + `','Status': 'Active','Notes': 'N/A','Start date': '01/01/2022','End date': '08/08/2023','Extension details': 'N/A','Employer': {        'ID': 'Comp-1',        'Name': 'CompanyA',       'Employer address and contact details': 'First st,Riyadh1234','Country': 'Saudi Arabia'      },'Employee': {        'ID': '441101772',        'Name': 'JohnDoe',        'Employee address and contact details': 'Second st,New Delhi 3342',        'Country': 'India'      },'Job': {        'Position': 'Developer',        'Level': 'Senior',        'Description': 'Manage teams of junior developers'      },'Benefits': {        'Currency': 'SAR',        'Salary': 10000,        'Annual increase': '3-7%',        'Annual leave': '30 days','Housing': 2000,        'Allowances': 1500,'Other benefits': 'Schooling for children and yearly tickets'      }, 'Disputes': [        {          'ID': 'D123',          'Status': 'Closed',          'Last updated date': '01/10/2023',          'Content': 'Employer did not provide the travel tickets for my annual leave in 2022','Response': [            {              'ID': 'Res123',              'Last updated date': '01/12/2023',              'Content': 'The employee was compensated'            }          ]}      ]    }"  ]}`) //
 
 	req, err := http.NewRequest("POST", "http://localhost:8801/invoke/my-channel/chaincode1", data)
 	if err != nil {
