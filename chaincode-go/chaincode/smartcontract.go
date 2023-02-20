@@ -172,13 +172,13 @@ func (s *SmartContract) UpdateContract(ctx contractapi.TransactionContextInterfa
 }
 
 /*
-* Given an existing contract and a valid unique dispute this method will append a new dispute into []Disputes, and return true.
-* Only dispute.ID must be unique. @Param Content must not be empty.
+* Given an existing contract this method will append a new dispute into []Disputes, and return true.
+* @Param Content must not be empty.
  */
-func (s *SmartContract) IssueDispute(ctx contractapi.TransactionContextInterface, ID string, DID string, Content string) (bool, error) {
+func (s *SmartContract) IssueDispute(ctx contractapi.TransactionContextInterface, ID string, Content string) (bool, error) {
 	curDate := time.Now()
 	dispute := Dispute{
-		ID:              DID,
+		ID:              "1", // should be modified later
 		Status:          "Active",
 		LastUpdatedDate: curDate.Format("01/02/2006"),
 		Content:         Content,
@@ -199,11 +199,13 @@ func (s *SmartContract) IssueDispute(ctx contractapi.TransactionContextInterface
 	// If any old dispute shares the ID of the new dispute return false.
 	var oldContract Contract
 	json.Unmarshal(contractJSON, &oldContract)
-	for i := 0; i < len(oldContract.Disputes); i++ {
-		if oldContract.Disputes[i].ID == dispute.ID {
-			return false, fmt.Errorf("There is an existing dispute with the same ID. ")
-		}
-	}
+	// for i := 0; i < len(oldContract.Disputes); i++ {
+	// 	if oldContract.Disputes[i].ID == dispute.ID {
+	// 		return false, fmt.Errorf("There is an existing dispute with the same ID. ")
+	// 	}
+	// }
+
+	dispute.ID = strconv.Itoa(len(oldContract.Disputes)) // Now the smart contract will give a dispute id by itself.
 	oldContract.Disputes = append(oldContract.Disputes, dispute)
 
 	contractJson, err := json.Marshal(oldContract)
@@ -322,10 +324,10 @@ func (s *SmartContract) CloseDispute(ctx contractapi.TransactionContextInterface
 
 // This method responds to an open dispute.
 // Given an existing ID and DisputeID, and a unique RespondID this method will return true. @Param Content must not be empty.
-func (s *SmartContract) RespondToDispute(ctx contractapi.TransactionContextInterface, ID string, DisputeID string, ResponseID string, Content string) (bool, error) {
+func (s *SmartContract) RespondToDispute(ctx contractapi.TransactionContextInterface, ID string, DisputeID string, Content string) (bool, error) {
 	curDate := time.Now()
 	response := Response{
-		ID:              ResponseID,
+		ID:              "Empty",
 		LastUpdatedDate: curDate.Format("01/02/2006"),
 		Content:         Content,
 	}
@@ -362,13 +364,8 @@ func (s *SmartContract) RespondToDispute(ctx contractapi.TransactionContextInter
 		return false, fmt.Errorf("There is no matching disputes with the given ID: %s ", DisputeID)
 	}
 
-	// After we found the dispute and made sure it is active we need to check if the ResponseID is unique or not. If it isn't unique will return false.
-	for i := 0; i < len(contract.Disputes[disputePos].Responses); i++ {
-		if contract.Disputes[disputePos].Responses[i].ID == ResponseID {
-			return false, fmt.Errorf("There is already a response with the same ResponseID: %s", ResponseID)
-		}
-	}
-
+	// Because we don't want the user to enter response ID.
+	response.ID = strconv.Itoa(len(contract.Disputes[disputePos].Responses))
 	contract.Disputes[disputePos].Responses = append(contract.Disputes[disputePos].Responses, response)
 	contractJson, err := json.Marshal(contract)
 	if err != nil {
@@ -465,7 +462,7 @@ func (s *SmartContract) TerminateContract(ctx contractapi.TransactionContextInte
 	}
 
 	if contract.Status == "Terminated" {
-		return false, fmt.Errorf("The contract is  %s.", contract.Status)
+		return false, fmt.Errorf("The contract is already %s.", contract.Status)
 	}
 
 	contract.Status = "Terminated"

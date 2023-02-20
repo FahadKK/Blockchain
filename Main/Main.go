@@ -83,7 +83,7 @@ type Response struct {
 
 func printScreen() {
 	options := []string{
-		"1. Create Contract (Simple)",
+		"1. Add Contract",
 		"2. Approve Contract",
 		"3. Update Contract",
 		"4. Extend Contract",
@@ -92,11 +92,10 @@ func printScreen() {
 		"7. Update Dispute",
 		"8. Close Dispute",
 		"9. Respond to Dispute",
-		"10. Create Contract",
-		"11. Read Contract",
-		"12. View Employee History",
-		"13. View Employer History",
-		"14. Get All Contracts",
+		"10. Read Contract",
+		"11. View Employee History",
+		"12. View Employer History",
+		"13. Get All Contracts",
 	}
 
 	numCols := 3
@@ -130,7 +129,8 @@ func printScreen() {
 	}
 
 	table.Render()
-	fmt.Println("Please choose one of the above options by entering its number")
+	fmt.Println()
+	fmt.Println("Please select a transaction to execute")
 }
 
 func choice() int {
@@ -146,12 +146,12 @@ func choice() int {
 
 	methodNumber, err := strconv.Atoi(choice)
 	if err != nil {
-		fmt.Printf("Invalid input. Please enter a number between 1 and 15.   %s \n", err)
+		fmt.Printf("Invalid input. Please enter a number between 1 and 15. \n")
 		return 0
 	}
 
 	if methodNumber < 1 || methodNumber > 15 {
-		fmt.Printf("Invalid input. Please enter a number between 1 and 115. \n")
+		fmt.Printf("Invalid input. Please enter a number between 1 and 15. \n")
 		return 0
 	}
 	return methodNumber
@@ -159,7 +159,7 @@ func choice() int {
 }
 
 func main() {
-	for j := 0; j < 14; j++ { // the program will loop for 14 times only
+	for j := 0; j < 20; j++ { // the program will loop for 20 times only
 		printScreen()
 		var input int = 0
 		for i := 0; i < 100; i++ {
@@ -176,32 +176,43 @@ func main() {
 		switch input {
 		case 1:
 
-			createContractSimple()
+			fmt.Println("You selected to execute create contract transaction ")
+			createContract()
 		case 2:
+			fmt.Println("You selected to execute approve contract transaction ")
 			approveContract()
 		case 3:
+			fmt.Println("You selected to execute update contract transaction ")
 			updateContract()
 		case 4:
+			fmt.Println("You selected to execute extend contract transaction ")
 			extendContract()
 		case 5:
+			fmt.Println("You selected to execute terminate contract transaction ")
 			terminateContract()
 		case 6:
+			fmt.Println("You selected to execute issue dispute transaction ")
 			issueDispute()
 		case 7:
-			updateDispute() // Not implemented yet.
+			fmt.Println("You selected to execute update dispute transaction ")
+			updateDispute()
 		case 8:
+			fmt.Println("You selected to execute close dispute transaction ")
 			closeDispute()
 		case 9:
+			fmt.Println("You selected to execute respond to dispute transaction ")
 			respondToDispute()
 		case 10:
-			createContract()
-		case 11:
+			fmt.Println("You selected to execute read contract transaction ")
 			prettifyContract(readContract())
-		case 12:
+		case 11:
+			fmt.Println("You selected to execute view employee history transaction ")
 			viewEmployeeHistory()
-		case 13:
+		case 12:
+			fmt.Println("You selected to execute view employer history transaction ")
 			viewEmployerHistory()
-		case 14:
+		case 13:
+			fmt.Println("You selected to execute view all contracts transaction ")
 			prettifyAllContracts(getAllContracts())
 		}
 		reader := bufio.NewReader(os.Stdin)
@@ -239,6 +250,26 @@ func postRequest(input string, methodName string) string {
 	return string(bodyText)
 }
 
+// This method will determine if the response from the smart contract is an error or not.
+// if @Param err represents an error this method will return true.
+func isError(err string) bool {
+
+	flag1 := strings.Contains(err, "\"message\":")
+	flag2 := strings.Contains(err, "message=")
+
+	return (flag1 && flag2) // Both flags must be true to be sure that the returned values is an error.
+}
+
+// Will format and print the error.
+func printError(err string) {
+	_, err, _ = strings.Cut(err, "message=")
+	_, err, _ = strings.Cut(err, "message=") // Because we got two peers.
+
+	err = strings.ReplaceAll(err, "\"}", "")
+	err = strings.ReplaceAll(err, "\"", "")
+	fmt.Printf("Error: %s", err)
+}
+
 func updateDispute() {
 	// Taking all the need inputs from the user
 	reader := bufio.NewReader(os.Stdin)
@@ -263,6 +294,11 @@ func updateDispute() {
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
 
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+
 	println(jsonString)
 }
 
@@ -281,7 +317,14 @@ func approveContract() {
 	jsonString := string(bodyText)
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
-	println(jsonString)
+
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+
+	println("Contract has been approved.")
+	prettifyTopContract(choseContract(ID))
 
 }
 
@@ -310,7 +353,17 @@ func extendContract() {
 	jsonString := string(bodyText)
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
-	println(jsonString)
+
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+
+	ID = combineStrings(ID) // To properly format ID
+	ID = strings.ReplaceAll(ID, "\n", "")
+
+	println("The contract has been extended successfully")
+	prettifyTopContract(choseContract(ID))
 
 }
 
@@ -329,7 +382,13 @@ func terminateContract() {
 	jsonString := string(bodyText)
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
-	println(jsonString)
+
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+
+	prettifyTopContract(choseContract(ID))
 
 }
 
@@ -341,17 +400,17 @@ func respondToDispute() {
 	fmt.Print("Enter Dispute ID: ")
 	DisputeID, err2 := reader.ReadString('\n')
 
-	fmt.Print("Enter Response ID: ")
-	RID, err4 := reader.ReadString('\n')
+	// fmt.Print("Enter Response ID: ")
+	// RID, err4 := reader.ReadString('\n')
 
 	fmt.Print("Enter the content of your response: ")
 	Content, err3 := reader.ReadString('\n')
 
-	if err != nil || err2 != nil || err3 != nil || err4 != nil {
+	if err != nil || err2 != nil || err3 != nil {
 		fmt.Printf("Could not read string \n")
 	}
 
-	combinedInputs := combineStrings(ID, DisputeID, RID, Content)
+	combinedInputs := combineStrings(ID, DisputeID, Content)
 	combinedInputs = strings.ReplaceAll(combinedInputs, "\n", "")
 
 	// Will send and get a response from the blockchain
@@ -360,7 +419,14 @@ func respondToDispute() {
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
 
-	println(jsonString)
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+
+	ID = combineStrings(ID)
+	ID = strings.ReplaceAll(ID, "\n", "")
+	prettifyDispute(choseContract(ID))
 }
 
 func closeDispute() {
@@ -383,7 +449,14 @@ func closeDispute() {
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
 
-	println(jsonString)
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+
+	ID = combineStrings(ID)
+	ID = strings.ReplaceAll(ID, "\n", "")
+	prettifyDispute(choseContract(ID))
 }
 
 func issueDispute() {
@@ -391,17 +464,17 @@ func issueDispute() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter Contract ID: ")
 	ID, err := reader.ReadString('\n')
-	fmt.Print("Enter Dispute ID: ")
-	DisputeID, err2 := reader.ReadString('\n')
+	// fmt.Print("Enter Dispute ID: ")
+	// DisputeID, err2 := reader.ReadString('\n')
 
 	fmt.Print("Enter the content of your dispute: ")
 	Content, err3 := reader.ReadString('\n')
 
-	if err != nil || err2 != nil || err3 != nil {
+	if err != nil || err3 != nil {
 		fmt.Printf("Could not read string \n")
 	}
 
-	combinedInputs := combineStrings(ID, DisputeID, Content)
+	combinedInputs := combineStrings(ID, Content)
 	combinedInputs = strings.ReplaceAll(combinedInputs, "\n", "")
 
 	// Will send and get a response from the blockchain
@@ -410,7 +483,14 @@ func issueDispute() {
 	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
 	jsonString = strings.TrimSuffix(jsonString, "}")
 
-	println(jsonString)
+	if isError(jsonString) {
+		printError(jsonString)
+		return
+	}
+	ID = strings.ReplaceAll(ID, "\n", "")
+	ID = combineStrings(ID)
+	prettifyDispute(choseContract(ID))
+
 }
 
 // Get will return a token without any spaces.
@@ -475,6 +555,11 @@ func viewEmployeeHistory() {
 	EmpData := EmployeeData{}
 	json.Unmarshal([]byte(jsonString), &EmpData)
 
+	if EmpData.Contracts == "0" {
+		fmt.Println("Invalid EmployeeID. Please try again.")
+		return
+	}
+
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Contracts", "Terminated Contracts", "Active Contracts", "Pending Contracts", "Disputes", "Open Disputes", "Closed Disputes"})
 	table.SetRowLine(true)
@@ -517,6 +602,11 @@ func viewEmployerHistory() {
 
 	EmpData := EmployeeData{}
 	json.Unmarshal([]byte(jsonString), &EmpData)
+
+	if EmpData.Contracts == "0" {
+		fmt.Println("Invalid EmployerID. Please try again.")
+		return
+	}
 
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Contracts", "Terminated Contracts", "Active Contracts", "Pending Contracts", "Disputes", "Open Disputes", "Closed Disputes"})
@@ -573,26 +663,29 @@ func createContractSimple() {
 		log.Fatal(err)
 	}
 
+	if isError(string(bodyText)) {
+		printError(string(bodyText))
+	}
+
 	fmt.Println(string(bodyText))
 }
 
 func updateContract() {
-	fmt.Println("Updating a contract from scratch involves many variables.")
-	fmt.Println("This is why I need you to go to the file Main/contract.json. ")
-	fmt.Println("In that file you will find a valid contract. Please change whatever value you desire.")
-	fmt.Print("Don't forget to change contract ID.")
-	fmt.Println("Kindly don't mess with the structure of the contract.")
-	fmt.Println("After changing the values of the contract save the json file and press ENTER.")
 
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("")
-	_, err := reader.ReadString('\n')
-
-	// Read the contents of the file
-	input, err := ioutil.ReadFile("Main/contract.json")
+	fmt.Print("Please enter the contract file name: ")
+	choice, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("Error")
-		panic(err)
+		fmt.Printf("Could not read string %s \n", err)
+		return
+	}
+
+	choice = strings.ReplaceAll(choice, "\n", "")
+	// Read the contents of the file
+	input, err := ioutil.ReadFile(choice)
+	if err != nil {
+		fmt.Println("Failed to located the file. Please don't forget to add .json at the end.")
+		return
 
 	}
 
@@ -603,26 +696,37 @@ func updateContract() {
 	jsonData = combineStrings(jsonData)
 
 	bodyText := postRequest(jsonData, "UpdateContract")
-	fmt.Println(bodyText)
+
+	if isError(bodyText) {
+		printError(bodyText)
+		return
+	}
+	fmt.Println("The contract has been updated.")
+
+	// We need to retrieve the id from the json string
+	_, jsonData, _ = strings.Cut(jsonData, ": ")
+	jsonData, _, _ = strings.Cut(jsonData, ",")
+	jsonData = strings.ReplaceAll(jsonData, "'", "")
+	jsonData = combineStrings(jsonData)
+	prettifyTopContract(choseContract(jsonData))
 }
 
 func createContract() {
 
-	fmt.Println("Creating a contract from scratch involves many variables.")
-	fmt.Println("This is why I need you to go to the file Main/contract.json. ")
-	fmt.Println("In that file you will find a valid contract. Please change whatever value you desire.")
-	fmt.Println("Kindly don't mess with the structure of the contract.")
-	fmt.Println("After changing the values of the contract save the json file and press ENTER.")
-
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("")
-	_, err := reader.ReadString('\n')
-
-	// Read the contents of the file
-	input, err := ioutil.ReadFile("Main/contract.json")
+	fmt.Print("Please enter the contract file name: ")
+	choice, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("Error")
-		panic(err)
+		fmt.Printf("Could not read string %s \n", err)
+		return
+	}
+
+	choice = strings.ReplaceAll(choice, "\n", "")
+	// Read the contents of the file
+	input, err := ioutil.ReadFile(choice)
+	if err != nil {
+		fmt.Println("Failed to located the file. Please don't forget to add .json at the end.")
+		return
 
 	}
 
@@ -633,7 +737,40 @@ func createContract() {
 	jsonData = combineStrings(jsonData)
 
 	bodyText := postRequest(jsonData, "HandleAddContract")
-	fmt.Println(bodyText)
+
+	if isError(bodyText) {
+		printError(bodyText)
+		return
+	}
+	fmt.Println("A contract with the status Pending has been created.")
+
+	// We need to retrieve the id from the json string
+	_, jsonData, _ = strings.Cut(jsonData, ": ")
+	jsonData, _, _ = strings.Cut(jsonData, ",")
+	jsonData = strings.ReplaceAll(jsonData, "'", "")
+	jsonData = combineStrings(jsonData)
+	prettifyTopContract(choseContract(jsonData))
+}
+
+// Will only show the contract top level info
+func showContractInfo(jsonString string) {
+
+}
+
+func choseContract(ID string) Contract {
+
+	bodyText := postRequest(ID, "ReadContract")
+	contract := Contract{}
+
+	jsonString := string(bodyText)
+	jsonString = strings.TrimPrefix(string(bodyText), "{\"response\":")
+	jsonString = strings.TrimSuffix(jsonString, "}")
+	err := json.Unmarshal([]byte(jsonString), &contract)
+	if err != nil {
+		fmt.Errorf("%s", err)
+		return contract
+	}
+	return contract
 }
 
 func readContract() Contract {
@@ -785,6 +922,96 @@ func prettifyContract(contract Contract) {
 			table.Append([]string{"Response ID", response.ID})
 			table.Append([]string{"Response Last Updated Date", response.LastUpdatedDate})
 			table.Append([]string{"Response Content", response.Content})
+		}
+	}
+
+	// Setting the colors of the columns
+	table.SetHeaderColor(
+		tablewriter.Colors{tablewriter.FgCyanColor},
+		tablewriter.Colors{tablewriter.FgRedColor},
+	)
+	table.SetColumnColor(
+		tablewriter.Colors{tablewriter.FgCyanColor},
+		tablewriter.Colors{tablewriter.FgRedColor},
+	)
+	// Set the table style
+	table.SetBorder(true)
+	table.SetColumnSeparator("|")
+	table.SetCenterSeparator("+")
+	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+
+	// Render the table
+	table.Render()
+}
+
+func prettifyTopContract(contract Contract) {
+	// In case the user enters a wrong ID
+	if contract.ID == "" {
+		println("No matching ID in the blockchain. Please try again.")
+		return
+	}
+	// Create a new table
+	table := tablewriter.NewWriter(os.Stdout)
+
+	// Set the table headers
+	table.SetHeader([]string{"Field", "Value"})
+
+	// Append each field and value as a row in the table
+	table.Append([]string{"ID", contract.ID})
+	table.Append([]string{"Status", contract.Status})
+	table.Append([]string{"Notes", contract.Notes})
+	table.Append([]string{"Start Date", contract.StartDate})
+	table.Append([]string{"End Date", contract.EndDate})
+	table.Append([]string{"Extension Details", contract.ExtensionDetails})
+	table.Append([]string{"Salary", strconv.Itoa(contract.Benefits.Salary)})
+
+	// Setting the colors of the columns
+	table.SetHeaderColor(
+		tablewriter.Colors{tablewriter.FgCyanColor},
+		tablewriter.Colors{tablewriter.FgRedColor},
+	)
+	table.SetColumnColor(
+		tablewriter.Colors{tablewriter.FgCyanColor},
+		tablewriter.Colors{tablewriter.FgRedColor},
+	)
+	// Set the table style
+	table.SetBorder(true)
+	table.SetColumnSeparator("|")
+	table.SetCenterSeparator("+")
+	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
+	table.SetAlignment(tablewriter.ALIGN_LEFT)
+
+	// Render the table
+	table.Render()
+}
+
+func prettifyDispute(contract Contract) {
+	// In case the user enters a wrong ID
+	if contract.ID == "" {
+		println("No matching ID in the blockchain. Please try again.")
+		return
+	}
+	// Create a new table
+	table := tablewriter.NewWriter(os.Stdout)
+
+	// Set the table headers
+	table.SetHeader([]string{"Field", "Value"})
+
+	// Append each field and value as a row in the table
+
+	for i := 0; i < len(contract.Disputes); i++ {
+		dispute := contract.Disputes[i]
+
+		table.Append([]string{"Dispute ID", dispute.ID})
+		table.Append([]string{"Status", dispute.Status})
+		table.Append([]string{"Last Updated", dispute.LastUpdatedDate})
+		table.Append([]string{"Content", dispute.Content})
+		for j := 0; j < len(dispute.Responses); j++ {
+			response := contract.Disputes[i].Responses[j]
+			table.Append([]string{"Response ID", response.ID})
+			table.Append([]string{"Last Updated", response.LastUpdatedDate})
+			table.Append([]string{"Content", response.Content})
 		}
 	}
 
