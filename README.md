@@ -3,8 +3,8 @@ Using Blockchain to Manage Overseas Employment Contracts  <br>
 <br>
 
 
-(Insert Name) is a proof of concept program that will demonstrate the solution provided in the following paper: <br>
-ww.google.com
+"Name pending" is a proof of concept program that will demonstrate the solution provided in the following paper: <br>
+"Link pending"
 
 
 
@@ -69,7 +69,7 @@ After setting up the environment we will install Fablo
 ```
 sudo curl -Lf https://github.com/hyperledger-labs/fablo/releases/download/1.1.0/fablo.sh -o /usr/local/bin/fablo && sudo chmod +x /usr/local/bin/fablo
 ```
-Credits to @(Insert Email)
+
 
 
 <br>
