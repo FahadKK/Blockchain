@@ -9,7 +9,7 @@ ww.google.com
 
 
 ## Prerequisites 
---------------
+
 
 
 <br>
@@ -27,7 +27,7 @@ In addition, To Ubuntu, you will need to install the following:
 <br>
 
 ## Installation
----------------
+
 <br>
 
 
@@ -49,7 +49,7 @@ Now interact with the system as much as you want.
 <br>
 
 ## Fablo Installation | Setting Up The Environment
------
+
 <br>
 
 If you need help setting up Fablo, this guide will help you. <br>
@@ -76,7 +76,7 @@ Credits to @(Insert Email)
 
 
 ## Examples
------------
+
 
 We will start with an empty blockchain and populate it.
 <br>
@@ -449,7 +449,7 @@ Enter EmployerID: Comp-1
 
 
 ## License
-------
+
 <br>
 
 (Insert License)
