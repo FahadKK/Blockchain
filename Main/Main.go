@@ -468,13 +468,13 @@ func issueDispute() {
 	// DisputeID, err2 := reader.ReadString('\n')
 
 	fmt.Print("Enter the content of your dispute: ")
-	Content, err3 := reader.ReadString('\n')
+	Content1, err3 := reader.ReadString('\n')
 
 	if err != nil || err3 != nil {
 		fmt.Printf("Could not read string \n")
 	}
 
-	combinedInputs := combineStrings(ID, Content)
+	combinedInputs := combineStrings(ID, Content1)
 	combinedInputs = strings.ReplaceAll(combinedInputs, "\n", "")
 
 	// Will send and get a response from the blockchain
@@ -624,50 +624,6 @@ func viewEmployerHistory() {
 
 	table.Render()
 
-}
-
-// creating contract the simple way.
-func createContractSimple() {
-	client := &http.Client{}
-
-	// Taking input from user.
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter Contract ID: ")
-	input, err := reader.ReadString('\n')
-	if err != nil {
-		fmt.Printf("Could not read string %s \n", err)
-		return
-	}
-
-	input = strings.ReplaceAll(input, "\n", "")
-
-	// We don't use the post method because here we are sending json string.
-	// TODO: Create a method to easily embede inputs here.
-	var data = strings.NewReader(`{"method": "HandleAddContract",
-"args": ["{'ID': '` + input + `','Status': 'Active','Notes': 'N/A','Start date': '01/01/2022','End date': '08/08/2023','Extension details': 'N/A','Employer': {        'ID': 'Comp-1',        'Name': 'CompanyA',       'Employer address and contact details': 'First st,Riyadh1234','Country': 'Saudi Arabia'      },'Employee': {        'ID': '441101772',        'Name': 'JohnDoe',        'Employee address and contact details': 'Second st,New Delhi 3342',        'Country': 'India'      },'Job': {        'Position': 'Developer',        'Level': 'Senior',        'Description': 'Manage teams of junior developers'      },'Benefits': {        'Currency': 'SAR',        'Salary': 10000,        'Annual increase': '3-7%',        'Annual leave': '30 days','Housing': 2000,        'Allowances': 1500,'Other benefits': 'Schooling for children and yearly tickets'      }, 'Disputes': [        {          'ID': 'D123',          'Status': 'Closed',          'Last updated date': '01/10/2023',          'Content': 'Employer did not provide the travel tickets for my annual leave in 2022','Response': [            {              'ID': 'Res123',              'Last updated date': '01/12/2023',              'Content': 'The employee was compensated'            }          ]}      ]    }"  ]}`) //
-
-	req, err := http.NewRequest("POST", "http://localhost:8801/invoke/my-channel/chaincode1", data)
-	if err != nil {
-		log.Fatal(err)
-	}
-	token := getToken()
-	req.Header.Set("Authorization", "Bearer "+token)
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-	bodyText, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if isError(string(bodyText)) {
-		printError(string(bodyText))
-	}
-
-	fmt.Println(string(bodyText))
 }
 
 func updateContract() {

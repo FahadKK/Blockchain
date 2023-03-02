@@ -199,13 +199,9 @@ func (s *SmartContract) IssueDispute(ctx contractapi.TransactionContextInterface
 	// If any old dispute shares the ID of the new dispute return false.
 	var oldContract Contract
 	json.Unmarshal(contractJSON, &oldContract)
-	// for i := 0; i < len(oldContract.Disputes); i++ {
-	// 	if oldContract.Disputes[i].ID == dispute.ID {
-	// 		return false, fmt.Errorf("There is an existing dispute with the same ID. ")
-	// 	}
-	// }
 
-	dispute.ID = strconv.Itoa(len(oldContract.Disputes)) // Now the smart contract will give a dispute id by itself.
+	// Now the smart contract will give a dispute id by itself without user input.
+	dispute.ID = strconv.Itoa(len(oldContract.Disputes))
 	oldContract.Disputes = append(oldContract.Disputes, dispute)
 
 	contractJson, err := json.Marshal(oldContract)
