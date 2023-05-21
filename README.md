@@ -3,8 +3,8 @@ Using Blockchain to Manage Overseas Employment Contracts  <br>
 <br>
 
 
-"Name pending" is a proof of concept program that will demonstrate the solution provided in the following paper: <br>
-"Link pending"
+Blockchain repo is a proof of concept program that will demonstrate the solution provided in the following paper: <br>
+"[Managing Expatriate Employment Contracts with Blockchain](https://www.mdpi.com/2079-9292/12/7/1673)"
 
 
 
